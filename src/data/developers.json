@@ -1,0 +1,18 @@
+[
+  {
+    "initials": "AG",
+    "name": "Aditya Gupta",
+    "title": "Full Stack Developer",
+    "detail": "16+ years of experience building reliable APIs, backend workflows, and scalable software delivery.",
+    "specialties": ["Node.js", "REST APIs", "Database design", "DevOps workflows"],
+    "focus": "Focuses on clean integrations, system reliability, and complete product delivery."
+  },
+  {
+    "initials": "GG",
+    "name": "Gaurav Gupta",
+    "title": "Senior Frontend Developer",
+    "detail": "8+ years of experience crafting polished, high-performance interfaces for modern web products.",
+    "specialties": ["React.js", "TypeScript", "UI architecture", "Performance optimization"],
+    "focus": "Specializes in responsive design, accessibility, and conversion-focused user experiences."
+  }
+]
