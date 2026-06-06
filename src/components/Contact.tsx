@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import type { FormEvent } from 'react'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -47,7 +47,6 @@ export default function Contact() {
     dateTime: '',
     message: '',
   })
-  const resetTimerRef = useRef<ReturnType<typeof window.setTimeout> | null>(null)
 
   const resetFormState = () => {
     dispatch(resetContactForm())
@@ -67,14 +66,6 @@ export default function Contact() {
       message: '',
     })
   }
-
-  useEffect(() => {
-    return () => {
-      if (resetTimerRef.current) {
-        clearTimeout(resetTimerRef.current)
-      }
-    }
-  }, [])
 
   // Minimum date is today
   const minDate = new Date()
@@ -189,17 +180,11 @@ export default function Contact() {
       dispatch(setContactDay(day))
       dispatch(setContactTimeSlot(timeSlot))
       dispatch(setContactMessage(message))
-       resetFormState()
 
-      await sendContactEmail(contactData)
-
-      if (resetTimerRef.current) {
-        clearTimeout(resetTimerRef.current)
-      }
-
-      resetTimerRef.current = window.setTimeout(() => {
-        resetFormState()
-      }, 2000)
+    const response =   await sendContactEmail(contactData)
+    if (response?.[0]?.status === 'fulfilled') {  
+      resetFormState()
+    }
     } catch (error) {
       console.error('Failed to send contact email:', error)
     } finally {
@@ -294,17 +279,6 @@ export default function Contact() {
           {isSending ? 'Sending...' : 'Save contact info'}
         </button>
       </form>
-      {contactName || contactEmail || contactNumber || contactDay || contactTimeSlot || contactMessage ? (
-        <div className="hero-card">
-          <p>Saved contact details:</p>
-          <p><strong>Name:</strong> {contactName || '—'}</p>
-          <p><strong>Email:</strong> {contactEmail || '—'}</p>
-          <p><strong>Contact Number:</strong> {contactNumber || '—'}</p>
-          <p><strong>Day:</strong> {contactDay || '—'}</p>
-          <p><strong>Time Slot:</strong> {contactTimeSlot || '—'}</p>
-          <p><strong>Message:</strong> {contactMessage || '—'}</p>
-        </div>
-      ) : null}
     </Screen>
   )
 }

@@ -11,9 +11,7 @@ export interface ContactEmailData {
 
 export const EMAIL_RECIPIENTS = [
   'guptag285@gmail.com',
-  'team2@example.com',
-  'team3@example.com',
-  'team4@example.com',
+  'ad.deep418@gmail.com',
 ]
 
 const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID
@@ -41,6 +39,7 @@ export async function sendContactEmail(data: ContactEmailData, recipients: strin
   }
 
   const templateParams = {
+    subject: formatContactEmailSubject(data.name),
     from_name: data.name,
     from_email: data.email,
     contact_number: data.contactNumber,
@@ -50,8 +49,10 @@ export async function sendContactEmail(data: ContactEmailData, recipients: strin
     email_body: formatContactEmailBody(data),
   }
 
+  const uniqueRecipients = Array.from(new Set(recipients))
+
   const results = await Promise.allSettled(
-    recipients.map((recipient) =>
+    uniqueRecipients.map((recipient) =>
       emailjs.send(
         EMAILJS_SERVICE_ID,
         EMAILJS_TEMPLATE_ID,
